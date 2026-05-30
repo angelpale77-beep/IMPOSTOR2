@@ -132,7 +132,25 @@
 </div>
 
 <script>
-    const palabras = ["Manzana", "Televisor", "Coche", "Estuche", "Fútbol", "Perro", "Playa", "Pizza", "Minecraft", "Impresora 3D"];
+    // CATÁLOGO GIGANTE DE PALABRAS COMPARTIDO
+    const palabras = [
+        // Videojuegos y Geek
+        "Minecraft", "Geometry Dash", "Roblox", "Fortnite", "Zelda", "Pokémon", "Among Us", "Discord", "WhatsApp", "YouTube", "TikTok", "Twitch",
+        // Tecnología y Maker
+        "Impresora 3D", "Filamento PLA", "Lithofanía", "Ordenador", "Portátil", "Ratón", "Teclado", "Auriculares", "Móvil", "Pantalla", "Servidor", "Código", "Micro:bit", "Robot",
+        // Comida y Bebida
+        "Pizza", "Hamburguesa", "Manzana", "Plátano", "Chocolate", "Patatas fritas", "Helado", "Tarta", "Espaguetis", "Palomitas", "Refresco", "Zumo", "Queso", "Sushi",
+        // Cosas del Instituto / Clase
+        "Estuche", "Mochila", "Libro", "Cuaderno", "Bolígrafo", "Lápiz", "Calculadora", "Regla", "Pizarra", "Examen", "Profesor", "Recreo", "Diccionario", "Compás",
+        // Animales
+        "Perro", "Gato", "León", "Tigre", "Delfín", "Tiburón", "Águila", "Lobo", "Oso", "Caballo", "Elefante", "Mono", "Serpiente", "Pájaro", "Dragón",
+        // Deportes y Ocio
+        "Fútbol", "Baloncesto", "Tenis", "Ping-pong", "Natación", "Ciclismo", "Skate", "Ajedrez", "Consola", "Música", "Guitarra", "Piano", "Película",
+        // Lugares y Espacio
+        "Playa", "Montaña", "Piscina", "Cine", "Parque", "Instituto", "Gimnasio", "Planeta", "Estrella", "Cohete", "Astronauta", "Luna", "Marte", "Estación Espacial",
+        // Objetos Comunes
+        "Televisor", "Coche", "Llave", "Reloj", "Dinero", "Zapatillas", "Gorra", "Gafas", "Silla", "Mesa", "Espejo", "Cama", "Ventana", "Puerta", "Lámpara"
+    ];
     
     let peer = null;
     let connections = []; 
@@ -142,7 +160,6 @@
     let isAdmin = false;
     let listaJugadores = [];
 
-    // Opciones de conexión segura para evitar bloqueos del navegador en HTTPS
     const peerConfig = {
         host: '0.peerjs.com',
         port: 443,
@@ -150,7 +167,6 @@
         pingInterval: 3000
     };
 
-    // 1. EL ADMIN CREA LA SALA
     function initAsAdmin() {
         const name = document.getElementById('username').value.trim();
         if (name.toLowerCase() !== 'angel') {
@@ -160,7 +176,6 @@
         isAdmin = true;
         listaJugadores = [currentUser];
 
-        // Forzamos la configuración SSL segura aquí
         peer = new Peer(peerConfig);
         
         peer.on('open', (id) => {
@@ -207,7 +222,6 @@
         });
     }
 
-    // 2. LOS JUGADORES SE UNEN
     function initAsPlayer() {
         const name = document.getElementById('username').value.trim();
         const code = document.getElementById('join-code').value.trim();
@@ -219,7 +233,6 @@
         currentUser = name;
         isAdmin = false;
 
-        // Forzamos la configuración SSL segura aquí también
         peer = new Peer(peerConfig);
 
         peer.on('open', () => {
@@ -295,6 +308,7 @@
 
         const randomIndex = Math.floor(Math.random() * 3);
         const impostor = listaJugadores[randomIndex];
+        // Seleccionar palabra aleatoria del catálogo gigante
         const palabra = palabras[Math.floor(Math.random() * palabras.length)];
 
         broadcast({ type: 'start', impostor: impostor, palabra: palabra });
